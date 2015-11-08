@@ -10,19 +10,15 @@
 
 #include "opencv2/core/core.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
-#include "highgui/highgui.hpp"
-#include "tools.hpp"
+#include "opencv2/highgui/highgui.hpp"
+#include "Tools.hpp"
+
 using namespace cv;
 
-class NoAdaptiveLaplacian{
+class Laplacian{
 
 public:
-	void setMask(Mat mask);
-	Mat noAdaptiveLaplacian(const Mat& U, int lambda);
-
-private:
-	Mat mask;
-	Mat filterUM_laplacianLAB(const Mat& U, int lambda1);
-	Mat filterLaplacian2(const Mat& U);
+	static Mat noAdaptive(const Mat& A, const Mat& mask, const int lambda);
+	static Mat logKernel(int size, double sigma);
 };
 #endif /* NOADAPTIVELAPLACIAN_HPP_ */

@@ -11,14 +11,13 @@
 #include <algorithm>
 #include "opencv2/core/core.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
-#include "highgui/highgui.hpp"
+#include "opencv2/highgui/highgui.hpp"
 
 using namespace cv;
 using namespace std;
 
 class Tools {
 public:
-	static Mat fspecialLoG(int size, double sigma);
 	static void meshgrid(const Range &xgv, const Range &ygv, Mat &X, Mat &Y);
 	static void minMax(const Mat& A, double* minA, double* maxA);
 	static void showImg(const Mat& A);

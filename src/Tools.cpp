@@ -5,39 +5,7 @@
  *      Author: davidp
  */
 
-#include "tools.hpp"
-
-//Creates a Laplacian of Gaussian mask, same as fspecial('log',..) in Matlab
-Mat Tools::fspecialLoG(int size, double sigma){
-	Mat1f x, y, xy, h, h2;
-
-	// first calculate Gaussian
-	int siz = (size-1)/2;
-	double eps = pow(2,-52);
-	double minH, maxH;
-	double std2 = pow(sigma,2);
-
-	meshgrid(Range(-siz,siz),Range(-siz,siz),x,y);
-	pow(x,2,x);
-	pow(y,2,y);
-	xy = x + y;
-
-	exp(xy/(-2*std2),h);
-	minMax(h,&minH,&maxH);
-	threshold(h,h,eps*maxH,1.0,THRESH_TOZERO);
-
-	Scalar sumH = sum(h);
-	if(sumH.val[0] != 0)
-		h  /= sumH.val[0];
-
-	// now calculate Laplacian
-	xy.convertTo(h2,CV_32F,1,-2*std2);
-	h2 /= pow(std2,2);
-	h2 = h2.mul(h);
-	h  = h2 - sum(h2).val[0]/pow(size,2); // make the filter sum to zero
-
-	return h;
-}
+#include "Tools.hpp"
 
 void Tools::meshgrid(const Range &xgv, const Range &ygv, Mat &X, Mat &Y){
 	vector<int> t_x, t_y;
