@@ -8,30 +8,27 @@
 #include "DeWAFF.hpp"
 
 Mat DeWAFF::filter(const Mat& A, const Mat& Laplacian, int w, double sigma_d, int sigma_r){
-    Mat B = Mat::zeros(A.size(),A.type());
-
-    int iMin, iMax, jMin, jMax;
-    Mat F, G, H, I, L, S, dL, da, db;
-	Mat1i X,Y;
-	vector<Mat> channels(3);
-	Vec3f pixel;
-	double norm_F;
-
     //Pre-compute Gaussian domain weights.
+    Mat1i X,Y;
     Tools::meshgrid(Range(-w,w),Range(-w,w),X,Y);
     pow(X,2,X);
     pow(Y,2,Y);
-    S = X+Y;
-    S.convertTo(S,CV_32F);
-    S /= (-2*pow(sigma_d,2));
-
-    exp(S,G);
+    Mat1f G = X+Y;
+    G.convertTo(G,CV_32F,-1/(2*pow(sigma_d,2)));
+    exp(G,G);
 
     //Apply bilateral filter.
-    cout << "Applying the deceived bilateral filter..." << endl;
+    Mat B = Mat(A.size(),A.type());
+    Mat F, H, I, L, dL, da, db;
+    int iMin, iMax, jMin, jMax;
+    vector<Mat> channels(3);
+	Vec3f pixel;
+	double norm_F;
 
 	//#pragma omp target//Uncomment if using g++ version 5
-	#pragma omp parallel for private(I,iMin,iMax,jMin,jMax,pixel,channels,dL,da,db,H,F,norm_F,L) shared(A,B,G,Laplacian,w,sigma_d,sigma_r)
+	#pragma omp parallel for\
+			private(I,iMin,iMax,jMin,jMax,pixel,channels,dL,da,db,H,F,norm_F,L)\
+			shared(A,B,G,Laplacian,w,sigma_d,sigma_r)
     for(int i = 0; i < A.rows; i++){
        for(int j = 0; j < A.cols; j++){
              //Extract local region.
@@ -40,8 +37,7 @@ Mat DeWAFF::filter(const Mat& A, const Mat& Laplacian, int w, double sigma_d, in
              jMin = max(j - w,0);
              jMax = min(j + w,A.cols-1);
 
-             //Compute Gaussian range weights.
-             //done in the three layers
+             //Compute Gaussian range weights in the three channels
              I = A(Range(iMin,iMax), Range(jMin,jMax));
              split(I,channels);
              pixel = A.at<Vec3f>(i,j);

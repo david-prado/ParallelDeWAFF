@@ -3,6 +3,12 @@
 ################################################################################
 
 # Add inputs and outputs from these tool invocations to the build variables 
+O_SRCS += \
+../src/DeWAFF.o \
+../src/Laplacian.o \
+../src/ParallelDeWAFF.o \
+../src/Tools.o 
+
 CPP_SRCS += \
 ../src/DeWAFF.cpp \
 ../src/Laplacian.cpp \
@@ -26,7 +32,7 @@ CPP_DEPS += \
 src/%.o: ../src/%.cpp
 	@echo 'Building file: $<'
 	@echo 'Invoking: GCC C++ Compiler'
-	g++ -fopenmp -O3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
+	g++ -fopenmp -I/usr/lib/openmpi/include/ -O3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 
