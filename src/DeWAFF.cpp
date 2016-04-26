@@ -25,7 +25,7 @@ Mat DeWAFF::filter(const Mat& A, const Mat& Laplacian, int w, double sigma_d, in
 	Vec3f pixel;
 	double norm_F;
 
-	//#pragma omp target//Uncomment if using g++ version 5
+	#pragma omp target //OpenMP 4 pragma. Supported in GCC 5
 	#pragma omp parallel for\
 			private(I,iMin,iMax,jMin,jMax,pixel,channels,dL,da,db,H,F,norm_F,L)\
 			shared(A,B,G,Laplacian,w,sigma_d,sigma_r)

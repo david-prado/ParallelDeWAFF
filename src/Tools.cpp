@@ -29,9 +29,3 @@ void Tools::minMax(const Mat& A, double* minA, double* maxA){
 	*minA = min(*minA,minT);
 	*maxA = max(*maxA,maxT);
 }
-
-void Tools::showImg(const Mat& A){
-	namedWindow( "Display window", WINDOW_AUTOSIZE );
-	imshow( "Display window", A );                   // Show our image inside it.
-	waitKey(0);
-}

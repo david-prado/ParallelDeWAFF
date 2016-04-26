@@ -15,30 +15,25 @@
 #include "Timer.h"
 using namespace std;
 
-typedef struct {
-	int width;
-	int height;
-	int depth;
-}frameInfo;
-
 class ParallelDeWAFF{
 public:
-	ParallelDeWAFF();
-	void init(int argc, char* argv[]);
-	void help();
+	ParallelDeWAFF(int argc, char* argv[]);
 	int start();
-	int processVideo();
-	int processImage();
-	Mat processFrame(const Mat & frame);
 
 private:
-	Mat mask; 				//A Laplacian of Gaussian mask
-	int numIter;			//Number of iterations for benchmark
 	unsigned int mode;		//Processing mode 00000001 = Video, 00000010 = Image,  00000101 = Video Benchmark, 00000110 = Image Benchmark
+	int numIter;			//Number of iterations for benchmark
 	string progName;		//This program name
+	Mat mask; 				//A Laplacian of Gaussian mask
 	string inputFile;
 	string outputFile;
 
-	void exitError(string msg);
+	void help();
+	void errExit(string msg);
+	void errHelpExit(string msg);
+
+	int processVideo();
+	int processImage();
+	Mat processFrame(const Mat & frame);
 };
 #endif /* PARALLELDEWAFF_HPP_ */

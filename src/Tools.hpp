@@ -20,7 +20,6 @@ class Tools {
 public:
 	static void meshgrid(const Range &xgv, const Range &ygv, Mat &X, Mat &Y);
 	static void minMax(const Mat& A, double* minA, double* maxA);
-	static void showImg(const Mat& A);
 };
 
 #endif /* TOOLS_HPP_ */
