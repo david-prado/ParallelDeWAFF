@@ -1,2 +1,4 @@
-Release
-*.mak
+*.o
+*.d
+Release/ParallelDeWAFF
+Release/src/
